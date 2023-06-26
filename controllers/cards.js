@@ -51,7 +51,7 @@ const deleteCard = (req, res) => {
       if (card) {
         res.send({ data: card });
       } else {
-        res.status(400).send({ message: 'Карточка с указанным _id не найдена' });
+        res.status(404).send({ message: 'Карточка с указанным _id не найдена' });
       }
     })
     .catch((err) => {
@@ -73,7 +73,11 @@ const updateLike = (req, res, method) => {
     { new: true },
   )
     .then((card) => {
-      res.send(card);
+      if (card) {
+        res.send(card);
+      } else {
+        res.status(404).send({ message: 'Передан несуществующий _id карточки' });
+      }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
