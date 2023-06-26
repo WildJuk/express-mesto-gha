@@ -30,7 +30,13 @@ const getUsers = (req, res) => {
 const getUser = (req, res) => {
   const { id } = req.params;
   User.findById(id)
-    .then((user) => res.send(user))
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        res.status(400).send({ message: 'Пользователь по указанному _id не найден' });
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: 'Передан некорректный id пользователя' });

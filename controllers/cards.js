@@ -46,9 +46,14 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { id } = req.params;
-  Card.findById(id)
-    .then((card) => Card.deleteOne(card)
-      .then(() => res.send({ data: card })))
+  Card.findByIdAndRemove(id)
+    .then((card) => {
+      if (card) {
+        res.send({ data: card });
+      } else {
+        res.status(400).send({ message: 'Карточка с указанным _id не найдена' });
+      }
+    })
     .catch((err) => {
       if (err.name === 'CastError') {
         res.status(400).send({ message: 'Некорректный id карточки' });
@@ -72,7 +77,7 @@ const updateLike = (req, res, method) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(400).send({ message: 'Некорректный id карточки' });
+        res.status(400).send({ message: 'Некорректный id' });
       } else if (err.statusCode === 404) {
         res.status(404).send({ message: err.message });
       } else {
