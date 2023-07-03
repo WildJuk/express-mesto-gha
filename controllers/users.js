@@ -1,26 +1,5 @@
 const User = require('../models/user');
 
-const createErrorMessageFromErrorType = (error) => {
-  const errorTextFromTypes = {
-    minlength: 'не должно быть короче',
-    maxlength: 'не должно быть длиннее',
-    required: 'обязательно для заполнения',
-  };
-  if (error.kind === 'required') {
-    return `Поле ${error.path} ${errorTextFromTypes.required}`;
-  }
-  if (error.kind === 'maxlength' || error.kind === 'minlength') {
-    return `Поле ${error.path} ${errorTextFromTypes[error.kind]} ${error.properties[error.kind]} символов`;
-  }
-  return `${error.message}`;
-};
-
-const createValidationErrorMessage = (error) => {
-  const fieldsErrors = Object.values(error.errors);
-  const errorText = fieldsErrors.map((item) => createErrorMessageFromErrorType(item));
-  return errorText.join(', ');
-};
-
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => res.send(users))
@@ -30,12 +9,13 @@ const getUsers = (req, res) => {
 const getUser = (req, res) => {
   const { id } = req.params;
   User.findById(id)
+    .orFail(() => {
+      const error = new Error('Пользователь по указанному _id не найден');
+      error.statusCode = 404;
+      throw error;
+    })
     .then((user) => {
-      if (user) {
-        res.send(user);
-      } else {
-        res.status(404).send({ message: 'Пользователь по указанному _id не найден' });
-      }
+      res.send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -57,7 +37,7 @@ const createUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(400)
-          .send({ message: createValidationErrorMessage(err) });
+          .send({ message: err.message });
       } else {
         res.status(500).send({ message: 'Произошла ошибка при создании пользователя' });
       }
@@ -70,7 +50,7 @@ const updateUserData = (res, req, config = {}) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(400).send({ message: createValidationErrorMessage(err) });
+        res.status(400).send({ message: err.message });
       } else if (err.name === 'CastError') {
         res.status(400).send({ message: 'Передан некорректный id пользователя' });
       } else if (err.statusCode === 404) {
