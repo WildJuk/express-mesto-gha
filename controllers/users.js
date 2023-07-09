@@ -43,17 +43,23 @@ const getCurrentUser = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
-  bcrypt.hash(password, 10)
+  const newUser = req.body;
+  bcrypt.hash(newUser.password, 10)
     .then((hash) => User.create({
-      name, about, avatar, email, password: hash,
+      name: newUser.name,
+      about: newUser.about,
+      avatar: newUser.avatar,
+      email: newUser.email,
+      password: hash,
     }))
     .then((user) => {
-      const currentUser = user;
-      delete currentUser.password;
-      res.status(201).send(currentUser);
+      const {
+        email, name, about, avatar,
+      } = user;
+
+      res.status(201).send({
+        email, name, about, avatar,
+      });
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
