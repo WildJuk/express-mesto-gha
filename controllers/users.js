@@ -24,8 +24,7 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-const getUserInfo = (req, res, next) => {
-  const { id } = req.params;
+const getUserInfo = (id, res, next) => {
   User.findById(id)
     .orFail(() => new NotFoundErr('Пользователь не найден'))
     .then((user) => {
@@ -35,11 +34,11 @@ const getUserInfo = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  getUserInfo(req, res, next);
+  getUserInfo(req.params.id, res, next);
 };
 
 const getCurrentUser = (req, res, next) => {
-  getUserInfo(req, res, next);
+  getUserInfo(req.params._id, res, next);
 };
 
 const createUser = (req, res, next) => {

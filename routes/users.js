@@ -12,7 +12,7 @@ const {
   validateProfileInfo,
 } = require('../middlewares/validators');
 
-console.log('here we are');
+console.log('here we are 111');
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
 router.get('/:id', validateObjectId, getUser);
