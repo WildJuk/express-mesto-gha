@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const regex = require('../middlewares/validators');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -11,10 +10,6 @@ const cardSchema = new mongoose.Schema({
   link: {
     type: String,
     required: [true, 'Поле link должно быть заполнено'],
-    validate: {
-      validator: (v) => regex.test(v),
-      message: 'Некорректный URL',
-    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
