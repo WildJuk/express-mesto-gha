@@ -12,11 +12,10 @@ const {
   validateProfileInfo,
 } = require('../middlewares/validators');
 
-console.log('here we are 111');
 router.get('/', getUsers);
 router.get('/me', getCurrentUser);
 router.get('/:id', validateObjectId, getUser);
-router.patch('/me', validateAvatarInfo, updateUserInfo);
-router.patch('/me/avatar', validateProfileInfo, updateUserAvatar);
+router.patch('/me', validateProfileInfo, updateUserInfo);
+router.patch('/me/avatar', validateAvatarInfo, updateUserAvatar);
 
 module.exports = router;
