@@ -12,9 +12,10 @@ const {
   validateProfileInfo,
 } = require('../middlewares/validators');
 
+console.log('here we are');
 router.get('/', getUsers);
-router.get('/:id', getUser);
-router.get('/me', validateObjectId, getCurrentUser);
+router.get('/me', getCurrentUser);
+router.get('/:id', validateObjectId, getUser);
 router.patch('/me', validateAvatarInfo, updateUserInfo);
 router.patch('/me/avatar', validateProfileInfo, updateUserAvatar);
 
