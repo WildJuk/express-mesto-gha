@@ -4,10 +4,10 @@ const UnauthorizedErr = require('../errors/unauthorized');
 const { NODE_ENV, JWT_SECRET = 'JWT_SECRET' } = process.env;
 
 const auth = (req, res, next) => {
-  if (!req.headers.cookie || !req.headers.cookie.startsWith('token=')) {
+  if (!req.cookie || !req.cookie.jwt) {
     next(new UnauthorizedErr('Необходима авторизация'));
   }
-  const token = req.headers.cookie.replace('Bearer ', '');
+  const token = req.cookie.jwt;
 
   let payload;
   try {
