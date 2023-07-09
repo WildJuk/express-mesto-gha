@@ -24,33 +24,21 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-// const getUserInfo = (id, res, next) => {
-//   User.findById(id)
-//     .orFail(() => new NotFoundErr('Пользователь не найден'))
-//     .then((user) => {
-//       res.send(user);
-//     })
-//     .catch(next);
-// };
-
-const getUser = (req, res, next) => {
-  User.findById(req.params.id)
+const getUserInfo = (id, res, next) => {
+  User.findById(id)
     .orFail(() => new NotFoundErr('Пользователь не найден'))
     .then((user) => {
       res.send(user);
     })
     .catch(next);
-  // getUserInfo(req.params.id, res, next);
+};
+
+const getUser = (req, res, next) => {
+  getUserInfo(req.params.id, res, next);
 };
 
 const getCurrentUser = (req, res, next) => {
-  User.findById(req.params._id)
-
-    .then((user) => {
-      res.send(user);
-    })
-    .catch(next);
-  // getUserInfo(req.params._id, res, next);
+  getUserInfo(req.params._id, res, next);
 };
 
 const createUser = (req, res, next) => {
