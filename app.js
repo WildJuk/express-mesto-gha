@@ -7,7 +7,7 @@ const { errors } = require('celebrate');
 const UnknowErr = require('./middlewares/unknow-err');
 const router = require('./routes');
 
-const { PORT } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
