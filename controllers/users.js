@@ -38,7 +38,7 @@ const getUser = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  getUserInfo(req.params._id, res, next);
+  getUserInfo(req.user._id, res, next);
 };
 
 const createUser = (req, res, next) => {
