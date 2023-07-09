@@ -11,7 +11,7 @@ const { PORT } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1/mestodb');
+mongoose.connect('mongodb://localhost:3000/mestodb');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
