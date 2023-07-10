@@ -75,8 +75,8 @@ const createUser = (req, res, next) => {
 
 const updateUserData = (res, req, next) => {
   const { user: { _id } } = req;
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
+  const { name, about, avatar } = req.body;
+  User.findByIdAndUpdate(_id, { name, about, avatar }, { new: true, runValidators: true })
     .orFail(() => new NotFoundErr('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch(next);
