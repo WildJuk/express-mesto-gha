@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const validUrlAdressRegEx = require('../middlewares/validators');
+const validator = require('validator');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,7 +12,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле link должно быть заполнено'],
     validate: {
-      validator: (v) => validUrlAdressRegEx.test(v),
+      validator: (v) => validator.isURL(v),
       message: 'Поле link должно быть валидным url',
     },
   },
