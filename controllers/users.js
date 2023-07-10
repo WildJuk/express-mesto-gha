@@ -4,8 +4,10 @@ const User = require('../models/user');
 const NotFoundErr = require('../errors/not-found');
 const BadRequestErr = require('../errors/bad-request');
 const ConflictErr = require('../errors/conflict');
-
-const { NODE_ENV, JWT_SECRET = 'JWT_SECRET' } = process.env;
+const {
+  NODE_ENV,
+  JWT_SECRET,
+} = require('../config');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
@@ -72,8 +74,9 @@ const createUser = (req, res, next) => {
 };
 
 const updateUserData = (res, req, next) => {
-  const { user: { _id }, body } = req;
-  User.findByIdAndUpdate(_id, body, { new: true, runValidators: true })
+  const { user: { _id } } = req;
+  const { name, about } = req.body;
+  User.findByIdAndUpdate(_id, { name, about }, { new: true, runValidators: true })
     .orFail(() => new NotFoundErr('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch(next);

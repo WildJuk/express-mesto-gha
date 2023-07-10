@@ -1,7 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
 const { ObjectId } = require('mongoose').Types;
 
-const regex = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/i;
+const validUrlAdressRegEx = /https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,}/i;
 
 const validateObjectId = celebrate({
   params: Joi.object().keys({
@@ -17,7 +17,7 @@ const validateObjectId = celebrate({
 const validateCardInfo = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    link: Joi.string().required().pattern(regex),
+    link: Joi.string().required().pattern(validUrlAdressRegEx),
   }),
 });
 
@@ -27,7 +27,7 @@ const validateUserInfo = celebrate({
     about: Joi.string().min(2).max(30),
     password: Joi.string().required(),
     email: Joi.string().required().email(),
-    avatar: Joi.string().pattern(regex),
+    avatar: Joi.string().pattern(validUrlAdressRegEx),
   }),
 });
 
@@ -40,19 +40,19 @@ const validateAuthInfo = celebrate({
 
 const validateAvatarInfo = celebrate({
   body: {
-    avatar: Joi.string().required().pattern(regex),
+    avatar: Joi.string().required().pattern(validUrlAdressRegEx),
   },
 });
 
 const validateProfileInfo = celebrate({
   body: {
-    name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
+    about: Joi.string().required().min(2).max(30),
   },
 });
 
 module.exports = {
-  regex,
+  validUrlAdressRegEx,
   validateObjectId,
   validateCardInfo,
   validateUserInfo,

@@ -1,20 +1,18 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const UnknowErr = require('./middlewares/unknow-err');
 const router = require('./routes');
-
-const { PORT = 3000 } = process.env;
+const { DATA_BASE_URI, PORT } = require('./config');
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
+mongoose.connect(DATA_BASE_URI);
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(router);
 app.use(errors());
