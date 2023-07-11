@@ -73,18 +73,32 @@ const createUser = (req, res, next) => {
     });
 };
 
-const updateUserData = (res, req, next) => {
+const updateUserData = (res, req, next, updatedData) => {
   const { user: { _id } } = req;
-  const { name, about, avatar } = req.body;
-  User.findByIdAndUpdate(_id, { name, about, avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(_id, updatedData, { new: true, runValidators: true })
     .orFail(() => new NotFoundErr('Пользователь не найден'))
     .then((user) => res.send(user))
     .catch(next);
 };
 
-const updateUserInfo = (req, res, next) => updateUserData(res, req, next);
+const updateUserInfo = (req, res, next) => updateUserData(
+  res,
+  req,
+  next,
+  {
+    name: req.body.name,
+    about: req.body.about,
+  },
+);
 
-const updateUserAvatar = (req, res, next) => updateUserData(res, req, next);
+const updateUserAvatar = (req, res, next) => updateUserData(
+  res,
+  req,
+  next,
+  {
+    avatar: req.body.avatar,
+  },
+);
 
 module.exports = {
   login,
